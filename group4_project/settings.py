@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework_swagger',
     'api',
 ]
 
@@ -66,9 +68,22 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+             'libraries': {
+                'staticfiles': 'django.templatetags.static',
+            },
         },
     },
 ]
+
+REST_FRAMEWORK = { 
+'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+'DEFAULT_PARSER_CLASSES': (
+    'rest_framework.parsers.JSONParser',
+    'rest_framework.parsers.FormParser',
+    'rest_framework.parsers.MultiPartParser',
+),
+
+ }
 
 WSGI_APPLICATION = 'group4_project.wsgi.application'
 
@@ -117,9 +132,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
